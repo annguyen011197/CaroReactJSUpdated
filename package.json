@@ -2,7 +2,7 @@
   "name": "caro-game-updated",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://annguyen011197.github.io/CaroReactJSUpdated/",
+  "homepage": "https://annguyen011197.github.io/CaroReactJSUpdated",
   "dependencies": {
     "gh-pages": "^2.1.1",
     "react": "^16.9.0",
