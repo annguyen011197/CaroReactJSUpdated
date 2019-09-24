@@ -2,12 +2,12 @@
   "name": "caro-game",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://annguyen011197.github.io/CaroReactJS",
+  "homepage": "https://annguyen011197.github.io/CaroReactJSUpdated",
   "dependencies": {
     "gh-pages": "^2.1.1",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
-    "react-scripts": "0.9.5"
+    "react-scripts": "^3.1.2"
   },
   "devDependencies": {},
   "scripts": {
@@ -16,5 +16,17 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "deploy": "gh-pages -d build"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
