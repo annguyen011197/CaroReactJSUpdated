@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Game from './cpn/Game';
-import Board from './cpn/Board';
+import Game from './cpn/Game/Game';
 
 class App extends Component {
   render() {
