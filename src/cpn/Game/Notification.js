@@ -1,46 +1,36 @@
 import React, { Component } from 'react';
 import { Postion } from './Model';
-
-class HistoryState {
-  constructor(data, current, currentPostion, winner) {
-    this.data = [...data.map(inner => [...inner])];
-    this.current = current;
-    this.currentPostion = currentPostion;
-    this.winner = winner;
-  }
-}
+import { connect } from 'react-redux';
+import { revert } from '../../reducers/game/actions';
 
 export class Notification extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      history: []
-    };
     this.index = -1;
   }
   pushHistory(value) {
-    const { history } = this.state;
-    let list = history;
-    if (this.index !== -1) {
-      list = list.slice(0, this.index + 1);
-    }
-    list.push(
-      new HistoryState(
-        value.board,
-        value.current,
-        value.currentPostion,
-        value.winner
-      )
-    );
-    this.setState({
-      history: list
-    });
+    // const { history } = this.state;
+    // let list = history;
+    // if (this.index !== -1) {
+    //   list = list.slice(0, this.index + 1);
+    // }
+    // list.push(
+    //   new HistoryState(
+    //     value.board,
+    //     value.current,
+    //     value.currentPostion,
+    //     value.winner
+    //   )
+    // );
+    // this.setState({
+    //   history: list
+    // });
   }
 
   clearHistory() {
-    this.setState({
-      history: []
-    });
+    // this.setState({
+    //   history: []
+    // });
   }
 
   renderWiner(winner) {
@@ -64,7 +54,7 @@ export class Notification extends Component {
   }
 
   renderHistory() {
-    const { history } = this.state;
+    const { history } = this.props;
 
     // console.log(history)
     return history.map((value, index) => {
@@ -82,7 +72,7 @@ export class Notification extends Component {
           <button
             className="history"
             onClick={() => {
-              this.onClick(value, index);
+              this.props.revert(index);
             }}
           >{`${curr} moved on column ${pos.x} row ${pos.y}`}</button>
         </li>
@@ -102,4 +92,17 @@ export class Notification extends Component {
   }
 }
 
-export default Notification;
+function mapStateToProps(state) {
+  const game = state.game;
+  return {
+    board: game.board,
+    currentPostion: game.currentPostion,
+    history: game.history,
+    winner: game.winner
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  { revert }
+)(Notification);

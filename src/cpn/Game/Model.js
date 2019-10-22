@@ -49,3 +49,12 @@ export class Winner {
     return res;
   }
 }
+
+export class HistoryState {
+  constructor(data, current, currentPostion, winner) {
+    this.data = [...data.map(inner => [...inner])];
+    this.current = current;
+    this.currentPostion = currentPostion;
+    this.winner = winner;
+  }
+}
