@@ -5,6 +5,7 @@
   "homepage": "https://annguyen011197.github.io/CaroReactJSUpdated",
   "precommit": "NODE_ENV=production lint-staged",
   "dependencies": {
+    "@material-ui/core": "^4.5.1",
     "gh-pages": "^2.1.1",
     "lodash": "^4.17.15",
     "react": "^16.10.2",
