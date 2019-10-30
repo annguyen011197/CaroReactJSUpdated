@@ -3,3 +3,9 @@ export const gameActions = {
   revert: 'revert',
   retry: 'retry'
 };
+
+export const userActions = {
+  loginSuccess: 'loginSuccess',
+  loginFail: 'loginFail',
+  callLogin: 'callLogin'
+}

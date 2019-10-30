@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { Container, TextField, Grid, withStyles, Checkbox, FormControlLabel, Button, Typography } from '@material-ui/core'
-
+import { Container, TextField, withStyles, Checkbox, FormControlLabel, Button, Typography } from '@material-ui/core'
+import { connect } from 'react-redux';
+import { callApi } from '../../reducers/user/action'
 
 const styles = theme => ({
     container: {
@@ -8,9 +9,7 @@ const styles = theme => ({
         flexWrap: 'wrap',
     },
     textField: {
-        marginLeft: theme.spacing(1),
-        marginRight: theme.spacing(1),
-        borderColor: 'red'
+
     },
     dense: {
         marginTop: theme.spacing(2),
@@ -24,7 +23,7 @@ const styles = theme => ({
     },
 });
 
-export class Login extends Component {
+class Login extends Component {
     constructor(props) {
         super(props)
     }
@@ -67,6 +66,9 @@ export class Login extends Component {
                         variant="contained"
                         color="primary"
                         className={classes.submit}
+                        onClick={() => {
+                            // this.props.callApi('annguyen011197', '011197')
+                        }}
                     >
                         Sign In
                     </Button>
@@ -76,4 +78,18 @@ export class Login extends Component {
     }
 }
 
-export default withStyles(styles)(Login)
+function mapStateToProps(state) {
+    const user = state.user;
+    return {
+        user: user.user
+    };
+}
+
+const styledCpn = withStyles(styles)(Login)
+
+export default connect(
+    mapStateToProps,
+    {
+        callApi
+    }
+)(styledCpn)

@@ -1,17 +1,16 @@
 import React, { Component } from 'react'
-import Login from './Login'
+import Signup from './Signup'
 import DefaultScreen from './DefaultScreen'
 
-
-class LoginScreen extends Component {
+class SignupScreen extends Component {
     render() {
         const { classes } = this.props
         return (
             <DefaultScreen
-                child={<Login />}
+                child={<Signup />}
             />
         )
     }
 }
 
-export default LoginScreen
+export default SignupScreen
