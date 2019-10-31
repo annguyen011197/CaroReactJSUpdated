@@ -1,8 +1,8 @@
 import { call, delay, put, takeLatest } from 'redux-saga/effects'
-import { userActions } from './reducers/type'
-import { registerUser } from './reducers/user/saga'
+import { signupAction } from './reducers/type'
+import { registerUser } from './reducers/signup/saga'
 
 
 export default function* rootSaga() {
-    yield takeLatest(userActions.callLogin, registerUser)
+    yield takeLatest(signupAction.signup, registerUser)
 }

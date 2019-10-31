@@ -1,8 +1,12 @@
 import React, { Component } from 'react'
-import { Container, TextField, withStyles, Checkbox, FormControlLabel, Button, Typography } from '@material-ui/core'
+import { Container, TextField, withStyles, Checkbox, FormControlLabel, Button, Typography, Link, preventDefault } from '@material-ui/core'
 import _ from 'lodash'
+import { link } from '../../reducers/axios'
+import { withAlert } from "react-alert";
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { callApi } from '../../reducers/user/action'
+import { compose } from 'redux'
+import { signup, clearErr } from '../../reducers/signup/action'
 
 const styles = theme => ({
     container: {
@@ -18,24 +22,39 @@ const styles = theme => ({
     menu: {
         width: 200,
     },
-    form: {
-        width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing(1),
-    },
+    link: {
+        marginTop: theme.spacing(2),
+    }
 });
 
-class Signup extends Component {
+type State = {
+    username: String,
+    password: String,
+    confirmPass: String,
+};
+
+class Signup extends Component<{}, State> {
     constructor(props) {
         super(props)
         this.state = {
             username: '',
             password: '',
-            cofirmPass: '',
+            confirmPass: '',
         }
         this.onChangeUserName = this.onChangeUserName.bind(this)
         this.onChangePassword = this.onChangePassword.bind(this)
         this.onChangeConfirmPassword = this.onChangeConfirmPassword.bind(this)
         this.signUp = this.signUp.bind(this)
+    }
+
+    componentDidUpdate() {
+        const { signupAlert, loading, alert, clearErr } = this.props;
+        if (signupAlert.show) {
+            alert.show(signupAlert.msg, {
+                type: signupAlert.type
+            })
+            clearErr()
+        }
     }
 
     // @flow
@@ -57,23 +76,37 @@ class Signup extends Component {
     }
 
     onChangeConfirmPassword(e: Object) {
-        const { cofirmPass } = this.state
-        const value = _.get(e, 'target.value', cofirmPass)
+        const { confirmPass } = this.state
+        const value = _.get(e, 'target.value', confirmPass)
         this.setState({
-            cofirmPass: value
+            confirmPass: value
         })
     }
 
     signUp() {
-        const { callApi } = this.props
-        const { username, password, cofirmPass } = this.state
-        // Check
-        callApi(username, password)
+        const { signup, alert } = this.props
+        const { username, password, confirmPass } = this.state
+        if (username.trim().length === 0) {
+            alert.show("Username is empty");
+            return;
+        }
+        if (password.length === 0) {
+            alert.show("Password is empty");
+            return;
+        }
+        if (password.includes(" ")) {
+            alert.show("Password contains space character");
+            return;
+        }
+        if (confirmPass !== password) {
+            alert.show("Confirm password is not match")
+        }
+        signup(username, password)
     }
 
     render() {
-        const { classes } = this.props
-        const { username, password, cofirmPass } = this.state
+        const { classes, loading } = this.props
+        const { username, password, confirmPass } = this.state
         return (
             <Container
                 maxWidth="xs"
@@ -85,7 +118,6 @@ class Signup extends Component {
                     <TextField
                         id="username"
                         label="User name "
-                        className={classes.textField}
                         margin="normal"
                         variant="outlined"
                         required
@@ -96,7 +128,6 @@ class Signup extends Component {
                     <TextField
                         id="password"
                         label="Password"
-                        className={classes.textField}
                         margin="normal"
                         variant="outlined"
                         required
@@ -108,14 +139,14 @@ class Signup extends Component {
                     <TextField
                         id="password"
                         label="Retype Password"
-                        className={classes.textField}
                         margin="normal"
                         variant="outlined"
                         required
                         fullWidth
                         type="password"
                         onChange={this.onChangeConfirmPassword}
-                        value={cofirmPass}
+                        value={confirmPass}
+                        error={confirmPass !== password}
                     />
                     <Button
                         type="submit"
@@ -124,27 +155,32 @@ class Signup extends Component {
                         fullWidth
                         className={classes.submit}
                         onClick={this.signUp}
+                        disabled={loading}
                     >
                         Sign up
                     </Button>
+                    <Typography variant="subtitle1" gutterBottom className={classes.link}>
+                        If you have an account, Please <Link href="/signin">Sign in</Link>
+                    </Typography>
                 </Container>
-            </Container>
+            </Container >
         )
     }
 }
 
 function mapStateToProps(state) {
-    const user = state.user;
+    const signup = state.signup;
     return {
-        user: user.user
+        signupAlert: signup.alert,
+        loading: signup.loading
     };
 }
 
-const styledCpn = withStyles(styles)(Signup)
-
-export default connect(
-    mapStateToProps,
-    {
-        callApi
-    }
-)(styledCpn)
+export default compose(
+    withRouter,
+    withAlert(),
+    withStyles(styles),
+    connect(mapStateToProps, {
+        signup, clearErr
+    })
+)(Signup)

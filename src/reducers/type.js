@@ -9,3 +9,10 @@ export const userActions = {
   loginFail: 'loginFail',
   callLogin: 'callLogin'
 }
+
+export const signupAction = {
+  success: 'signupsuccess',
+  fail: 'signupfail',
+  signup: 'signup',
+  clearErr: 'signupClearErr'
+}

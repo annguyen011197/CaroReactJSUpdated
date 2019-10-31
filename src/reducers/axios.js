@@ -13,4 +13,9 @@ export function errorHandle(error: {}): String {
     return `Error: ${error.message}`
 }
 
+// @flow
+export function link(path: String) {
+    return debug + path
+}
+
 export default instance
